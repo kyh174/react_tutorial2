@@ -1,128 +1,90 @@
-import { useState } from 'react';
-import './App.css';
+import { useRef } from "react";
 
-function ProductCategoryRow({ category }) {
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    console.log(inputRef);
+    inputRef.current.focus();
+  }
+
   return (
-    <tr>
-      <th colSpan='2'>
-        {category}
-      </th>
-    </tr>
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
   );
 }
 
-function ProductRow({ product }) {
-  const name = product.stocked ? product.name : 
-    <span style={{ color: 'red' }}>
-      {product.name}
-    </span>;
-  
-  return (
-    <tr>
-      <td>{name}</td>
-      <td>{product.price}</td>
-    </tr>
-  );
-}
+// export default function CatFriends() {
+//   const firstCatRef = useRef(null);
+//   const secondCatRef = useRef(null);
+//   const thirdCatRef = useRef(null);
 
-function ProductTable({ products, filterText, inStockOnly }) {
-  let lastCategory = null;
-  let rows = [];
+//   function handleScrollToFirstCat() {
+//     firstCatRef.current.scrollIntoView({
+//       behavior: 'smooth',
+//       block: 'nearest',
+//       inline: 'center'
+//     });
+//   }
 
-  products.forEach( product => {
-    if (
-      product.name.toLowerCase().indexOf(
-        filterText.toLowerCase()
-      ) === -1
-    ) {
-      return;
-    }
-    if (inStockOnly && !product.stocked) {
-      return;
-    }
-    if (product.category !== lastCategory) {
-      rows.push(
-        <ProductCategoryRow
-          category={product.category}
-          key={product.category} />
-      );
-    }
-    rows.push(
-      <ProductRow
-        product={product}
-        key={product.name} />
-    );
-    lastCategory = product.category;
-  });
+//   function handleScrollToSecondCat() {
+//     secondCatRef.current.scrollIntoView({
+//       behavior: 'smooth',
+//       block: 'nearest',
+//       inline: 'center'
+//     });
+//   }
 
-  return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
-  )
-}
+//   function handleScrollToThirdCat() {
+//     thirdCatRef.current.scrollIntoView({
+//       behavior: 'smooth',
+//       block: 'nearest',
+//       inline: 'center'
+//     });
+//   }
 
-function SearchBar({ 
-  filterText, 
-  inStockOnly,
-  onFilterTextChange,
-  onInStockOnlyChange
-}) {
-  return (
-    <form>
-      <input type='text'
-        value={filterText}
-        placeholder='Search...' 
-        onChange={(e) => onFilterTextChange(e.target.value)}
-      />
-      <label>
-        <input type='checkbox' 
-          checked={inStockOnly}
-          onChange={(e) => onInStockOnlyChange(e.target.checked)}
-        />
-        {' '}
-        Only show products in stock
-      </label>
-    </form>
-  );
-}
-
-function FilterableProductTable({ products }) {
-  const [filterText, setFilterText] = useState('');
-  const [inStockOnly, setInStockOnly] = useState(false);
-
-  return (
-    <div>
-      <SearchBar
-        filterText={filterText}
-        inStockOnly={inStockOnly}
-        onFilterTextChange={setFilterText}
-        onInStockOnlyChange={setInStockOnly} />
-      <ProductTable 
-        products={products}
-        filterText={filterText}
-        inStockOnly={inStockOnly} />
-    </div>
-  )
-}
-
-const PRODUCTS = [
-  {category: "Fruits", price: "$1", stocked: true, name: "Apple"},
-  {category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit"},
-  {category: "Fruits", price: "$2", stocked: false, name: "Passionfruit"},
-  {category: "Vegetables", price: "$2", stocked: true, name: "Spinach"},
-  {category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin"},
-  {category: "Vegetables", price: "$1", stocked: true, name: "Peas"}
-];
-
-export default function App() {
-  return (
-    <FilterableProductTable products={PRODUCTS} />
-  );
-}
+//   return (
+//     <>
+//       <nav>
+//         <button onClick={handleScrollToFirstCat}>
+//           Tom
+//         </button>
+//         <button onClick={handleScrollToSecondCat}>
+//           Maru
+//         </button>
+//         <button onClick={handleScrollToThirdCat}>
+//           Jellylorum
+//         </button>
+//       </nav>
+//       <div>
+//         <ul>
+//           <li>
+//             <img
+//               src="https://placekitten.com/g/200/200"
+//               alt="Tom"
+//               ref={firstCatRef}
+//             />
+//           </li>
+//           <li>
+//             <img
+//               src="https://placekitten.com/g/300/200"
+//               alt="Maru"
+//               ref={secondCatRef}
+//             />
+//           </li>
+//           <li>
+//             <img
+//               src="https://placekitten.com/g/250/200"
+//               alt="Jellylorum"
+//               ref={thirdCatRef}
+//             />
+//           </li>
+//         </ul>
+//       </div>
+//     </>
+//   );
+// }
